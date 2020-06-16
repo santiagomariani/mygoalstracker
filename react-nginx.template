@@ -1,6 +1,6 @@
 
 upstream docker-gunicorn {
-    server python:5000;
+    server https://mygoalstracker-api.herokuapp.com:80;
 }
 
 server {
