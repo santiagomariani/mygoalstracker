@@ -1,6 +1,6 @@
 
 upstream docker-gunicorn {
-    server https://mygoalstracker-api.herokuapp.com:80;
+    server mygoalstracker-api.herokuapp.com:443;
 }
 
 server {
