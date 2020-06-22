@@ -1,48 +1,45 @@
+gzip on;
+gzip_comp_level 2;
+gzip_min_length 512;
+server_tokens off;
 
-http {
-    gzip on;
-    gzip_comp_level 2;
-    gzip_min_length 512;
-    server_tokens off;
+include mime.types;
+default_type application/octet-stream;
+sendfile on;
 
-    include mime.types;
-    default_type application/octet-stream;
-    sendfile on;
+# handle SNI
+proxy_ssl_server_name on;
 
-    # handle SNI
-    proxy_ssl_server_name on;
-    
-    # resolver needs to be set because we're using dynamic proxy_pass
-    resolver 8.8.8.8;
+# resolver needs to be set because we're using dynamic proxy_pass
+resolver 8.8.8.8;
 
-    upstream docker-gunicorn {
-        server mygoalstracker-api.herokuapp.com:443;
+upstream docker-gunicorn {
+    server mygoalstracker-api.herokuapp.com:443;
+}
+
+server {
+    listen $PORT;
+    server_name _;
+    #server_name localhost;
+
+    location / {
+        root /usr/share/nginx/html;
+        index  index.html index.htm;
+        try_files $uri $uri/ /index.html;
     }
 
-    server {
-        listen $PORT;
-        server_name _;
-        #server_name localhost;
+    # this is for reverse-proxy
+    # if the api namespace is in the url, the request message
+    # is send to be-web-server
+    location /api {
+        proxy_pass         http://docker-gunicorn;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_ssl_name mygoalstracker-api.herokuapp.com;
+        proxy_set_header x-forwarded-host $host;
+        proxy_set_header Host mygoalstracker-api.herokuapp.com;
 
-        location / {
-            root /usr/share/nginx/html;
-            index  index.html index.htm;
-            try_files $uri $uri/ /index.html;
-        }
-
-        # this is for reverse-proxy
-        # if the api namespace is in the url, the request message
-        # is send to be-web-server
-        location /api {
-            proxy_pass         http://docker-gunicorn;
-            proxy_set_header   X-Real-IP $remote_addr;
-            proxy_ssl_name mygoalstracker-api.herokuapp.com;
-            proxy_set_header x-forwarded-host $host;
-            proxy_set_header Host mygoalstracker-api.herokuapp.com;
-
-            #proxy_redirect     off;
-            # proxy_set_header   Host $host;
-            # proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
+        #proxy_redirect     off;
+        # proxy_set_header   Host $host;
+        # proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 }
