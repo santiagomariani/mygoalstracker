@@ -1,18 +1,3 @@
-gzip on;
-gzip_comp_level 2;
-gzip_min_length 512;
-server_tokens off;
-
-include mime.types;
-default_type application/octet-stream;
-sendfile on;
-
-# handle SNI
-proxy_ssl_server_name on;
-
-# resolver needs to be set because we're using dynamic proxy_pass
-resolver 8.8.8.8;
-
 upstream docker-gunicorn {
     server mygoalstracker-api.herokuapp.com:443;
 }
