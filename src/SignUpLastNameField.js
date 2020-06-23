@@ -20,7 +20,6 @@ export default function SignUpLastNameField({value, onChange, error}) {
             autoComplete='lname'
             name='lastName'
             variant='outlined'
-            required
             fullWidth
             id='lastName'
             label='Last Name'
