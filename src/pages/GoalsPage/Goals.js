@@ -127,7 +127,8 @@ class Goals extends React.Component {
         <Container component='main'>
         <CssBaseline />
         <Grid container spacing={3}
-                        xs={10}
+                        xs={11}
+                        sm={8}
                         md={6} 
                         direction="column"
                         justify="flex-start"

@@ -61,10 +61,10 @@ const GoalsListItem = ({ itemValue, index, onClickDeleteItem, onClickModifyGoal 
       <Grid container spacing={1} direction="row" alignItems="center" justify="flex-start">
           <Grid item xs={10}>
             <ListItemText
-              primary={<Typography style={styles.hyphens} variant="h5" gutterBottom>
+              primary={<Typography style={styles.hyphens} variant="subtitle2" gutterBottom>
                           {itemValue.name}
                       </Typography>}
-              secondary={<Typography style={styles.hyphens} variant="h6" gutterBottom>
+              secondary={<Typography style={styles.hyphens} variant="body2" gutterBottom>
                           {itemValue.description}
                         </Typography>}
             />
