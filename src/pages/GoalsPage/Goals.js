@@ -9,12 +9,15 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { Collapse } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 const styles = {
     goalTypesContainer: {
         borderRadius: '6px',
-        backgroundColor: '#485545',
-        backgroundImage: 'linear-gradient(132deg, #485545 0%, #2e7204 88%)',
+        backgroundColor: '#ccc',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+        backgroundImage: 'linear-gradient(130deg, #485545 0%, #2e7204 88%)',
         borderStyle: 'solid',
         borderWidth: '1.2px',
         webkitBoxShadow: '0px 3px 26px -5px rgba(54,128,24,1)',
@@ -127,7 +130,8 @@ class Goals extends React.Component {
         <Container component='main'>
         <CssBaseline />
         <Grid container spacing={3}
-                        xs={10}
+                        xs={11}
+                        sm={8}
                         md={6} 
                         direction="column"
                         justify="flex-start"
@@ -135,11 +139,18 @@ class Goals extends React.Component {
                         style={styles.goalTypesContainer} >
 
             <Grid style={styles.addGoalType} xs={12} item>
-                <Button onClick={this.onClickSignOut}>Sign Out</Button>
+                <Typography style={styles.addGoalType} variant='body1'>Goals of Santiago Mariani</Typography>
             </Grid>
+
+            <Grid style={styles.addGoalType} xs={12} item>
+                <Button onClick={this.onClickSignOut} variant="outlined">Sign Out</Button>
+            </Grid>
+            
             <Grid style={styles.addGoalType} xs={12} item>
                 <AddGoalType onClickAddGoalType={this.onClickAddGoalType} />
             </Grid>
+
+
             {
             this.state.goalTypes.map((goalType, i) => (
                 <Grid style={styles.goalType} xs={12} item>

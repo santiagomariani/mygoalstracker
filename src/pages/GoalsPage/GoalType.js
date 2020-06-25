@@ -123,7 +123,7 @@ class GoalType extends React.Component {
                 <Typography style={styles.hyphens} variant="h3" gutterBottom>
                     {this.props.nameOfGoalType}
                 </Typography>
-                <Typography style={styles.hyphens} variant="h4" gutterBottom>
+                <Typography style={styles.hyphens} variant="body1" gutterBottom>
                     {this.props.descriptionOfGoalType}
                 </Typography>
             </Grid>

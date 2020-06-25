@@ -19,6 +19,7 @@ const theme = createMuiTheme({
   }
 });
 
+/*
 theme.typography.h3 = {
   fontSize: '1.2rem',
   '@media (min-width:600px)': {
@@ -58,6 +59,7 @@ theme.typography.h6 = {
     fontSize: '1.2rem',
   },
 };
+*/
 
 ReactDOM.render(
     <BrowserRouter>
