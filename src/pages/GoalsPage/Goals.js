@@ -6,10 +6,10 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { Collapse } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import Zoom from '@material-ui/core/Zoom';
 
 const styles = {
     goalTypesContainer: {
@@ -45,7 +45,8 @@ class Goals extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            goalTypes: []
+            goalTypes: [],
+            goalTypesReady: 0
         }
     }
 
@@ -125,10 +126,21 @@ class Goals extends React.Component {
         this.props.history.push('/')
     }
 
+    incGoalTypesReady = () => {
+        this.setState((state) => {
+            return {goalTypesReady: state.goalTypesReady + 1}
+        })
+    }
+
+    goalTypesAreReady = () => {
+        return this.state.goalTypesReady === this.state.goalTypes.length
+    }
+
     render() {
         return(
-        <Container component='main'>
+            <Container component='main'>
         <CssBaseline />
+        <Zoom in={true}>
         <Grid container spacing={3}
                         xs={11}
                         sm={8}
@@ -150,10 +162,10 @@ class Goals extends React.Component {
                 <AddGoalType onClickAddGoalType={this.onClickAddGoalType} />
             </Grid>
 
-
             {
-            this.state.goalTypes.map((goalType, i) => (
-                <Grid style={styles.goalType} xs={12} item>
+                this.state.goalTypes.map((goalType, i) => (
+                <Zoom in={this.goalTypesAreReady()}>
+                <Grid style={this.goalTypesAreReady() ? styles.goalType: {display: 'none'}} xs={12} item>
                     <GoalType
                         key={goalType['id']}
                         nameOfGoalType={goalType['name']}
@@ -162,11 +174,14 @@ class Goals extends React.Component {
                         index={i}
                         onClickDeleteGoalType={this.onClickDeleteGoalType}
                         onClickModifyGoalType={this.onClickModifyGoalType}
+                        incGoalTypesReady={this.incGoalTypesReady}
                     />
                 </Grid>
+                </Zoom>
             ))
             }
         </Grid>
+        </Zoom>
         </Container>
         )
     }
