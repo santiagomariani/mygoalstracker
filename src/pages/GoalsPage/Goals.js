@@ -14,10 +14,10 @@ import Zoom from '@material-ui/core/Zoom';
 const styles = {
     goalTypesContainer: {
         borderRadius: '6px',
-        backgroundColor: '#ccc',
+        backgroundColor: '#299513',
         backgroundRepeat: 'no-repeat',
         backgroundAttachment: 'fixed',
-        backgroundImage: 'linear-gradient(130deg, #485545 0%, #2e7204 88%)',
+        backgroundImage: 'linear-gradient(225deg, #299513 0%, #005300 100%)',
         borderStyle: 'solid',
         borderWidth: '1.2px',
         webkitBoxShadow: '0px 3px 26px -5px rgba(54,128,24,1)',
@@ -26,28 +26,20 @@ const styles = {
         borderColor: '#00aa00',
         padding: '3%',
         margin: '20px auto',
-        position: 'relative'
+        position: 'relative',
+        minHeight: '100%'
     },
     addGoalType: {
         marginBottom: '0px'
-    },
-    goalType: {
-        borderRadius: '20px',
-        backgroundColor: '#1a1a1a',
-        width:'100%',
-        marginBottom:'20px'
     }
 }
-
 
 class Goals extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            goalTypes: [],
-            goalTypesReady: 0
-        }
+            goalTypes: []        }
     }
 
     componentDidMount() {
@@ -63,9 +55,9 @@ class Goals extends React.Component {
     }
 
     onClickDeleteGoalType = (index) => {
-        this.setState((state, props) => {
-            let id = state.goalTypes[index]['id']
-            let goalTypes = state.goalTypes
+        this.setState((prevState) => {
+            let id = prevState.goalTypes[index]['id']
+            let goalTypes = prevState.goalTypes
             goalTypes.splice(index, 1)
             fetch('/api/goal_type/' + id.toString(), {
                 method: 'DELETE',
@@ -74,6 +66,7 @@ class Goals extends React.Component {
                 }
             })
             .catch(err => console.error(err))
+            console.log(prevState.goalTypesReady)
             return {goalTypes: goalTypes}
         })
     }
@@ -126,16 +119,6 @@ class Goals extends React.Component {
         this.props.history.push('/')
     }
 
-    incGoalTypesReady = () => {
-        this.setState((state) => {
-            return {goalTypesReady: state.goalTypesReady + 1}
-        })
-    }
-
-    goalTypesAreReady = () => {
-        return this.state.goalTypesReady === this.state.goalTypes.length
-    }
-
     render() {
         return(
             <Container component='main'>
@@ -164,8 +147,6 @@ class Goals extends React.Component {
 
             {
                 this.state.goalTypes.map((goalType, i) => (
-                <Zoom in={this.goalTypesAreReady()}>
-                <Grid style={this.goalTypesAreReady() ? styles.goalType: {display: 'none'}} xs={12} item>
                     <GoalType
                         key={goalType['id']}
                         nameOfGoalType={goalType['name']}
@@ -174,10 +155,7 @@ class Goals extends React.Component {
                         index={i}
                         onClickDeleteGoalType={this.onClickDeleteGoalType}
                         onClickModifyGoalType={this.onClickModifyGoalType}
-                        incGoalTypesReady={this.incGoalTypesReady}
                     />
-                </Grid>
-                </Zoom>
             ))
             }
         </Grid>
