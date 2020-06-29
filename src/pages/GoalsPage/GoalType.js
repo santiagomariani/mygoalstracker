@@ -6,6 +6,7 @@ import AddGoal from './AddGoal'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography';
 import ModifyGoalType from './ModifyGoalType'
+import Zoom from '@material-ui/core/Zoom';
 
 const styles = {
     container: {
@@ -28,11 +29,17 @@ const styles = {
         msHyphens: 'auto',
         mozHyphens: 'auto',
         hyphens: 'auto'
+    },
+    goalType: {
+        borderRadius: '20px',
+        backgroundColor: '#1a1a1a',
+        width:'100%',
+        marginBottom:'20px'
     }
 }
 
 export default function GoalType(props){
-    const [goals, setGoals] = useState([])
+    const [goals, setGoals] = useState(null)
 
     useEffect(() => {
         fetch('/api/goals_of_type_id/' + props.goalTypeId.toString(), {
@@ -45,7 +52,6 @@ export default function GoalType(props){
         .then(res => res.json())
         .then(goals => {
             setGoals(goals)
-            props.incGoalTypesReady()
         })
     }, [])
 
@@ -57,7 +63,11 @@ export default function GoalType(props){
                 'x-access-token': localStorage.getItem('usertoken')
             }
         })
-        .then(res => setGoals(goals.splice(index, 1)))
+        .then(res => {
+            const temp = [...goals]
+            temp.splice(index, 1)
+            setGoals(temp)
+        })
         .catch(err => console.error(err))
     }
 
@@ -97,38 +107,44 @@ export default function GoalType(props){
         setGoals(tempGoals)
     }
 
-    return (
-        <div>
-        <Grid style={styles.container} container spacing={1} direction="row" alignItems="center" justify="flex-start">
-            <Grid item xs={10}>
-                <Typography style={styles.hyphens} variant="h3" gutterBottom>
-                    {props.nameOfGoalType}
-                </Typography>
-                <Typography style={styles.hyphens} variant="body1" gutterBottom>
-                    {props.descriptionOfGoalType}
-                </Typography>
-            </Grid>
-            <Grid item xs={2} style={styles.buttons}>
-                <Grid container spacing={0} direction="row" alignItems="center" justify="flex-start">
-                    <Grid xs={6} align="center" style={{padding: 0}} item>
-                        <IconButton  size={'small'} edge='end' aria-label='delete' onClick={() => props.onClickDeleteGoalType(props.index)}>
-                            <DeleteIcon />
-                        </IconButton>
-                    </Grid>
-                    <Grid xs={6} align="center" item>
-                        <ModifyGoalType onClickModifyGoalType={props.onClickModifyGoalType} index={props.index} />
+    if (goals) {
+        return (
+            <Zoom in={true}> 
+                <Grid style={styles.goalType} xs={12} item>
+                    <Grid style={styles.container} container spacing={1} direction="row" alignItems="center" justify="flex-start">
+                        <Grid item xs={10}>
+                            <Typography style={styles.hyphens} variant="h3" gutterBottom>
+                                {props.nameOfGoalType}
+                            </Typography>
+                            <Typography style={styles.hyphens} variant="body1" gutterBottom>
+                                {props.descriptionOfGoalType}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={2} style={styles.buttons}>
+                            <Grid container spacing={0} direction="row" alignItems="center" justify="flex-start">
+                                <Grid xs={6} align="center" style={{padding: 0}} item>
+                                    <IconButton  size={'small'} edge='end' aria-label='delete' onClick={() => props.onClickDeleteGoalType(props.index)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Grid>
+                                <Grid xs={6} align="center" item>
+                                    <ModifyGoalType onClickModifyGoalType={props.onClickModifyGoalType} index={props.index} />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <AddGoal style={styles.addGoal} onClickAddGoal={onClickAddGoal} />
+                        </Grid>
+                        <Grid item xs={12}>
+                        <GoalsList  style={styles.goalsList} items={goals}
+                            onClickDeleteItem={onClickDeleteGoal} 
+                            onClickModifyGoal={onClickModifyGoal}
+                            />
+                        </Grid> 
                     </Grid>
                 </Grid>
-            </Grid>
-            <Grid item xs={12}>
-                <AddGoal style={styles.addGoal} onClickAddGoal={onClickAddGoal} />
-            </Grid>
-            <Grid item xs={12}>
-            <GoalsList  style={styles.goalsList} items={goals}
-                   onClickDeleteItem={onClickDeleteGoal} 
-                   onClickModifyGoal={onClickModifyGoal}
-                   />
-            </Grid> 
-        </Grid> 
-        </div>)
+            </Zoom>)
+    } else {
+        return <div></div>
+    }
 }
