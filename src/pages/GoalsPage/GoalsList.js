@@ -94,7 +94,7 @@ export default function GoalsList ({ items, onClickDeleteItem, onClickModifyGoal
 
   return (
     <div className={classes.demo}>
-      <MaterialList dense={false}>
+      <MaterialList className={"sasa"} dense={false}>
         <TransitionGroup>
         {
           items.map((item, i) => (
