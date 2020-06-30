@@ -139,10 +139,11 @@ class Goals extends React.Component {
                         alignItems="center"
                         style={styles.goalTypesContainer} >
 
+            {/*
             <Grid style={styles.addGoalType} xs={12} item>
                 <Typography style={styles.addGoalType} variant='body1'>Goals of Santiago Mariani</Typography>
             </Grid>
-
+            */}
             <Grid style={styles.addGoalType} xs={12} item>
                 <Button onClick={this.onClickSignOut} variant="outlined">Sign Out</Button>
             </Grid>
