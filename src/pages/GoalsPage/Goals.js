@@ -10,6 +10,12 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
+import './styles.css';
+import {
+    CSSTransition,
+    TransitionGroup,
+  } from 'react-transition-group';
+  
 
 const styles = {
     goalTypesContainer: {
@@ -121,9 +127,9 @@ class Goals extends React.Component {
 
     render() {
         return(
+            <Zoom in={true} onExited={this.onClickDeleteGoalType}>
             <Container component='main'>
         <CssBaseline />
-        <Zoom in={true}>
         <Grid container spacing={3}
                         xs={11}
                         sm={8}
@@ -144,23 +150,22 @@ class Goals extends React.Component {
             <Grid style={styles.addGoalType} xs={12} item>
                 <AddGoalType onClickAddGoalType={this.onClickAddGoalType} />
             </Grid>
-
             {
                 this.state.goalTypes.map((goalType, i) => (
-                    <GoalType
-                        key={goalType['id']}
-                        nameOfGoalType={goalType['name']}
-                        descriptionOfGoalType={goalType['description']}
-                        goalTypeId={goalType['id']}
-                        index={i}
-                        onClickDeleteGoalType={this.onClickDeleteGoalType}
-                        onClickModifyGoalType={this.onClickModifyGoalType}
-                    />
+                        <GoalType
+                            key={goalType['id']}
+                            nameOfGoalType={goalType['name']}
+                            descriptionOfGoalType={goalType['description']}
+                            goalTypeId={goalType['id']}
+                            index={i}
+                            onClickDeleteGoalType={this.onClickDeleteGoalType}
+                            onClickModifyGoalType={this.onClickModifyGoalType}
+                        />
             ))
             }
         </Grid>
-        </Zoom>
         </Container>
+        </Zoom>
         )
     }
 }

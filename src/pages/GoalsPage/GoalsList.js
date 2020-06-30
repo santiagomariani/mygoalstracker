@@ -13,6 +13,11 @@ import DoneIcon from '@material-ui/icons/Done'
 import ModifyGoal from './ModifyGoal'
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
+import './styles.css';
+import {
+  CSSTransition,
+  TransitionGroup,
+} from 'react-transition-group';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,36 +56,37 @@ const styles = {
 const GoalsListItem = ({ itemValue, index, onClickDeleteItem, onClickModifyGoal }) => {
   
   return (
-    <MaterialListItem>
-      {/*
-      <ListItemAvatar>
-        <Avatar>
-          <FolderIcon />
-        </Avatar>
-      </ListItemAvatar>*/}
-      <Grid container spacing={1} direction="row" alignItems="center" justify="flex-start">
-          <Grid item xs={10}>
-            <ListItemText
-              primary={<Typography style={styles.hyphens} variant="subtitle2" gutterBottom>
-                          {itemValue.name}
-                      </Typography>}
-              secondary={<Typography style={styles.hyphens} variant="body2" gutterBottom>
-                          {itemValue.description}
+
+      <MaterialListItem>
+        {/*
+        <ListItemAvatar>
+          <Avatar>
+            <FolderIcon />
+          </Avatar>
+        </ListItemAvatar>*/}
+        <Grid container spacing={1} direction="row" alignItems="center" justify="flex-start">
+            <Grid item xs={10}>
+              <ListItemText
+                primary={<Typography style={styles.hyphens} variant="subtitle2" gutterBottom>
+                            {itemValue.name}
                         </Typography>}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <ListItemSecondaryAction>
-              <IconButton size={'small'} edge='end' aria-label='delete' onClick={() => onClickDeleteItem(index)}>
-                <DoneIcon />
-              </IconButton>
-              <ModifyGoal onClickModifyGoal={onClickModifyGoal}
-                          index={index} />
-            </ListItemSecondaryAction>
-          </Grid>
-      </Grid>
-      
-    </MaterialListItem>)
+                secondary={<Typography style={styles.hyphens} variant="body2" gutterBottom>
+                            {itemValue.description}
+                          </Typography>}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <ListItemSecondaryAction>
+                <IconButton size={'small'} edge='end' aria-label='delete' onClick={() => onClickDeleteItem(index)}>
+                  <DoneIcon />
+                </IconButton>
+                <ModifyGoal onClickModifyGoal={onClickModifyGoal}
+                            index={index} />
+              </ListItemSecondaryAction>
+            </Grid>
+        </Grid>
+        
+      </MaterialListItem>)
 }
 
 export default function GoalsList ({ items, onClickDeleteItem, onClickModifyGoal }) {
@@ -89,16 +95,24 @@ export default function GoalsList ({ items, onClickDeleteItem, onClickModifyGoal
   return (
     <div className={classes.demo}>
       <MaterialList dense={false}>
+        <TransitionGroup>
         {
           items.map((item, i) => (
-            <GoalsListItem
+            <CSSTransition
               key={item.id}
-              index={i}
-              itemValue={item}
-              onClickDeleteItem={onClickDeleteItem}
-              onClickModifyGoal={onClickModifyGoal} />)
+              timeout={350}
+              classNames="item"
+            >
+              <GoalsListItem
+                index={i}
+                itemValue={item}
+                onClickDeleteItem={onClickDeleteItem}
+                onClickModifyGoal={onClickModifyGoal} />
+              </CSSTransition>
+              )
           )
         }
+        </TransitionGroup>
       </MaterialList>
     </div>
   )
