@@ -102,6 +102,7 @@ export default function GoalsList ({ items, onClickDeleteItem, onClickModifyGoal
               key={item.id}
               timeout={350}
               classNames="item"
+              exit={false}
             >
               <GoalsListItem
                 index={i}
